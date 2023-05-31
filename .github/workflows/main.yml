@@ -31,7 +31,7 @@ jobs:
       - name: Install from PSGallery
         shell: pwsh
         run: |
-          $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost,'Master','sa','Verystrongindeed123!'
+          $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost','Master','sa','Verystrongindeed123!'
           $sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
           $sqlConnection.Open()
           $sqlConnection.Close()
