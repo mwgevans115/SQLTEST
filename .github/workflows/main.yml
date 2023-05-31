@@ -81,6 +81,12 @@ jobs:
          $files = Get-ChildItem SQLCop/Current/*.sql
          $files | % {
             $_.Name
+            $Params=@{
+              ServerInstance='localhost'
+              Database='TargetDB'
+              Username='sa'
+              Password='Verystrongindeed123!'
+            }
             $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost','TargetDB','sa','Verystrongindeed123!'
-            Invoke-Sqlcmd -InputFile $_.FullName -ConnectionString $connectionString
+            Invoke-Sqlcmd -InputFile $_.FullName @Params -TrustServerCertificate
           }
