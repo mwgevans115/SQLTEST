@@ -24,6 +24,10 @@ jobs:
         SA_PASSWORD: Verystrongindeed123!
   steps:
       - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          name: red-gate/SQLCop     <-- clone https://github.com/org1/repo1
+          ref: refs/heads/release
       - name: Set environment variable ENV_CONTAINER_ID
         run: echo "ENV_CONTAINER_ID=$(docker ps --all --filter status=running --no-trunc --format "{{.ID}}")" >> $GITHUB_ENV
       - name: CreateTargetDB
@@ -34,15 +38,15 @@ jobs:
           $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost','Master','sa','Verystrongindeed123!'
           $sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
           $sqlConnection.Open()
-          $Command = New-Object System.Data.SQLClient.SQLCommand
-          $Command.Connection = $sqlConnection
+          #$Command = New-Object System.Data.SQLClient.SQLCommand
+          #$Command.Connection = $sqlConnection
           #$Command.CommandText = "INSERT INTO FileSizeTable (FileName,FileSize,FileNameLength,Date) VALUES (@name,@size,@length,@dt)";
-          $Command.CommandText = "CREATE DATABASE TARGETDB";
+          #$Command.CommandText = "CREATE DATABASE TARGETDB";
           #$Command.Parameters.Add("@name", $i);
           #$Command.Parameters.Add("@size", $items);
           #$Command.Parameters.Add("@length", $temp);
           #$Command.Parameters.Add("@dt", $currentdate);
-          $Command.ExecuteNonQuery();
+          #$Command.ExecuteNonQuery();
           #$sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
           #$sqlConnection.Open()
           $sqlConnection.Close()
