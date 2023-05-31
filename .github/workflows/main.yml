@@ -32,8 +32,9 @@ jobs:
         shell: pwsh
         run: |
           $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost','Master','sa','Verystrongindeed123!'
+          $sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
           $Command = New-Object System.Data.SQLClient.SQLCommand
-          $Command.Connection = $dbConnection
+          $Command.Connection = $sqlConnection
           #$Command.CommandText = "INSERT INTO FileSizeTable (FileName,FileSize,FileNameLength,Date) VALUES (@name,@size,@length,@dt)";
           $Command.CommandText = "CREATE DATABASE TARGETDB";
           #$Command.Parameters.Add("@name", $i);
