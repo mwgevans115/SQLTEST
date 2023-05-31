@@ -74,3 +74,13 @@ jobs:
           #$sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
           #$sqlConnection.Open()
           $sqlConnection.Close()
+    - name: Powershell SQLServer Module Install
+      shell: pwsh
+      run: |
+         Install-Module -Name SqlServer -Force
+         $files = Get-ChildItem SQLCop/Current/*.sql
+         $files | % {
+            $_.Name
+            $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost','TargetDB','sa','Verystrongindeed123!'
+            Invoke-Sqlcmd -InputFile $_.FullName -ConnectionString £connectionString
+          }
