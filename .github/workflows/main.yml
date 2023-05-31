@@ -14,31 +14,31 @@ jobs:
   run-tests:
     runs-on: ubuntu-latest
     services:
-      sqlserver:
-        image: chriseaton/adventureworks:latest
-        ports:
-          - 1433:1433
-        env:
-          ACCEPT_EULA: Y
-          SA_PASSWORD: 3uuiCaKxfbForrK
-      #mssql:
-      # image: mcr.microsoft.com/mssql/server:2019-latest
-      #  env:
-      #    SA_PASSWORD: MyTestPassword
-      #    ACCEPT_EULA: 'Y'
-      #  ports:
-      #    - 1433:1433
+    #  sqlserver:
+    #    image: chriseaton/adventureworks:latest
+    #    ports:
+    #      - 1433:1433
+    #    env:
+    #      ACCEPT_EULA: Y
+    #      SA_PASSWORD: 3uuiCaKxfbForrK
+       mssql:
+         image: mcr.microsoft.com/mssql/server:2019-latest
+         env:
+           SA_PASSWORD: MyTestPassword
+           ACCEPT_EULA: 'Y'
+         ports:
+           - 1433:1433
     steps:
      - name: Set environment variable ENV_CONTAINER_ID
        run: echo "ENV_CONTAINER_ID=$(docker ps --all --filter status=running --no-trunc --format "{{.ID}}")" >> $GITHUB_ENV
-     #- name: Restore AdventureWorks2017
-     #  run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "3uuiCaKxfbForrK" -Q "RESTORE DATABASE [AdventureWorks2017] FROM DISK = '/adventureworks.bak' WITH MOVE 'AdventureWorks2017' TO '/var/opt/mssql/data/AdventureWorks.mdf', MOVE 'AdventureWorks2017_log' TO '/var/opt/mssql/data/AdventureWorks_log.ldf'"
+     - name: CreateTargetDB
+       run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "MyTestPassword" -Q "CREATE DATABASE TargetDB"
      - uses: actions/checkout@v2
      - name: Install tSQLt with SQL auth on AdventureWorks2017
        uses: lowlydba/tsqlt-installer@v1
        with:
           sql-instance: localhost
-          database: AdventureWorks2017
+          database: TargetDB
           version: latest
           user: sa
-          password: 3uuiCaKxfbForrK
+          password: MyTestPassword
