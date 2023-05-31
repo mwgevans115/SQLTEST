@@ -32,9 +32,18 @@ jobs:
         shell: pwsh
         run: |
           $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost','Master','sa','Verystrongindeed123!'
-          $sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
-          $sqlConnection.Open()
-          $sqlConnection.Close()
+          $Command = New-Object System.Data.SQLClient.SQLCommand
+          $Command.Connection = $dbConnection
+          #$Command.CommandText = "INSERT INTO FileSizeTable (FileName,FileSize,FileNameLength,Date) VALUES (@name,@size,@length,@dt)";
+          $Command.CommandText = "CREATE DATABASE TARGETDB";
+          #$Command.Parameters.Add("@name", $i);
+          #$Command.Parameters.Add("@size", $items);
+          #$Command.Parameters.Add("@length", $temp);
+          #$Command.Parameters.Add("@dt", $currentdate);
+          $Command.ExecuteNonQuery();
+          #$sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
+          #$sqlConnection.Open()
+          #$sqlConnection.Close()
       - name: Install tSQLt with SQL auth
         uses: lowlydba/tsqlt-installer@v1
         with:
