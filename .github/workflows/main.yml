@@ -59,8 +59,8 @@ jobs:
           #$Command.CommandText = "INSERT INTO FileSizeTable (FileName,FileSize,FileNameLength,Date) VALUES (@name,@size,@length,@dt)";
           #$Command.CommandText = "CREATE DATABASE TARGETDB";
           $files | % {
-            $Query = get-content $_
             $_.Name
+            $Query = get-content $_ -raw            
             $Command.CommandText = $Query
             $Command.ExecuteNonQuery();
           }
