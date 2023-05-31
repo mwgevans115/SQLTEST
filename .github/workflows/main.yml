@@ -50,14 +50,20 @@ jobs:
     - name: Install SQLCop
       shell: pwsh
       run: |
-          Get-ChildItem SQLCop/Current
-          $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost','Master','sa','Verystrongindeed123!'
+          $files = Get-ChildItem SQLCop/Current/*.sql
+          $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost','TargetDB','sa','Verystrongindeed123!'
           $sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
           $sqlConnection.Open()
-          #$Command = New-Object System.Data.SQLClient.SQLCommand
-          #$Command.Connection = $sqlConnection
+          $Command = New-Object System.Data.SQLClient.SQLCommand
+          $Command.Connection = $sqlConnection
           #$Command.CommandText = "INSERT INTO FileSizeTable (FileName,FileSize,FileNameLength,Date) VALUES (@name,@size,@length,@dt)";
           #$Command.CommandText = "CREATE DATABASE TARGETDB";
+          $files | % {
+            $Query = get-content $_
+            $_.Name
+            $Command.CommandText = $Query
+            $Command.ExecuteNonQuery();
+          }
           #$MyQuery = get-content "e:\SQLQuery1.sql";
           #$Command.Parameters.Add("@name", $i);
           #$Command.Parameters.Add("@size", $items);
