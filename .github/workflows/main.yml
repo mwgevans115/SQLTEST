@@ -31,6 +31,9 @@ jobs:
       with:
         repository: red-gate/SQLCop
         path: SQLCop
+    - name: Sleep for 30 seconds
+      run: sleep 30s
+      shell: bash
     - name: Set environment variable ENV_CONTAINER_ID
       run: echo "ENV_CONTAINER_ID=$(docker ps --all --filter status=running --no-trunc --format "{{.ID}}")" >> $GITHUB_ENV
     - name: CreateTargetDB
