@@ -24,12 +24,13 @@ jobs:
         SA_PASSWORD: Verystrongindeed123!
   steps:
       - uses: actions/checkout@v2
-
+      - name: CreateTargetDB
+        run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Verystrongindeed123! -Q "CREATE DATABASE TargetDB"
       - name: Install tSQLt with SQL auth
         uses: lowlydba/tsqlt-installer@v1
         with:
           sql-instance: localhost
-          database: master
+          database: TargetDB
           version: latest
           user: sa
           password: Verystrongindeed123!
