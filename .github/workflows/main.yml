@@ -33,6 +33,7 @@ jobs:
         run: |
           $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost','Master','sa','Verystrongindeed123!'
           $sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
+          $sqlConnection.Open()
           $Command = New-Object System.Data.SQLClient.SQLCommand
           $Command.Connection = $sqlConnection
           #$Command.CommandText = "INSERT INTO FileSizeTable (FileName,FileSize,FileNameLength,Date) VALUES (@name,@size,@length,@dt)";
@@ -44,7 +45,7 @@ jobs:
           $Command.ExecuteNonQuery();
           #$sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
           #$sqlConnection.Open()
-          #$sqlConnection.Close()
+          $sqlConnection.Close()
       - name: Install tSQLt with SQL auth
         uses: lowlydba/tsqlt-installer@v1
         with:
