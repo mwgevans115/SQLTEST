@@ -60,7 +60,8 @@ jobs:
           #$Command.CommandText = "CREATE DATABASE TARGETDB";
           $files | % {
             $_.Name
-            $Query = get-content $_ -raw            
+            $Query = get-content $_ -raw
+            $Query
             $Command.CommandText = $Query
             #$Command.ExecuteNonQuery();
           }
