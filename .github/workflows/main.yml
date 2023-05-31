@@ -11,34 +11,25 @@ on:
 name: Test for PRs
 # omitted, see above
 jobs:
-  run-tests:
-    runs-on: ubuntu-latest
-    services:
-    #  sqlserver:
-    #    image: chriseaton/adventureworks:latest
-    #    ports:
-    #      - 1433:1433
-    #    env:
-    #      ACCEPT_EULA: Y
-    #      SA_PASSWORD: 3uuiCaKxfbForrK
-       mssql:
-         image: mcr.microsoft.com/mssql/server:2019-latest
-         env:
-           SA_PASSWORD: MyTestPassword
-           ACCEPT_EULA: 'Y'
-         ports:
-           - 1433:1433
-    steps:
-     - name: Set environment variable ENV_CONTAINER_ID
-       run: echo "ENV_CONTAINER_ID=$(docker ps --all --filter status=running --no-trunc --format "{{.ID}}")" >> $GITHUB_ENV
-     #- name: CreateTargetDB
-       #run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost,1433 -U sa -P MyTestPassword -Q "CREATE DATABASE TargetDB"
-     - uses: actions/checkout@v2
-     - name: Install tSQLt with SQL auth on AdventureWorks2017
-       uses: lowlydba/tsqlt-installer@v1
-       with:
+ sql-auth-tsqlt:
+  name: Test installting tSQLt with SQL auth
+  runs-on: ubuntu-latest
+  services:
+    sqlserver:
+      image: mcr.microsoft.com/mssql/server:2019-latest
+      ports:
+        - 1433:1433
+      env:
+        ACCEPT_EULA: Y
+        SA_PASSWORD: verystrongindeed
+  steps:
+      - uses: actions/checkout@v2
+
+      - name: Install tSQLt with SQL auth
+        uses: lowlydba/tsqlt-installer@v1
+        with:
           sql-instance: localhost
-          database: Master
+          database: master
           version: latest
           user: sa
-          password: MyTestPassword
+          password: verystrongindeed
