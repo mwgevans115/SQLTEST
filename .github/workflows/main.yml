@@ -32,7 +32,7 @@ jobs:
      - name: Set environment variable ENV_CONTAINER_ID
        run: echo "ENV_CONTAINER_ID=$(docker ps --all --filter status=running --no-trunc --format "{{.ID}}")" >> $GITHUB_ENV
      - name: CreateTargetDB
-       run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "MyTestPassword" -Q "CREATE DATABASE TargetDB"
+       run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P MyTestPassword -Q "CREATE DATABASE TargetDB"
      - uses: actions/checkout@v2
      - name: Install tSQLt with SQL auth on AdventureWorks2017
        uses: lowlydba/tsqlt-installer@v1
