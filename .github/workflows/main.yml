@@ -91,5 +91,5 @@ jobs:
             
             $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost','TargetDB','sa','Verystrongindeed123!'
             Invoke-Sqlcmd -InputFile $_.FullName @Params -TrustServerCertificate
-            Invoke-Sqlcmd -Query "Exec tsqlt sqlcop.$($_.BaseName)" @Params -TrustServerCertificate
           }
+          Invoke-Sqlcmd -Query "Exec tsqlt.run sqlcop" @Params -TrustServerCertificate
