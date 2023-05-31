@@ -38,9 +38,19 @@ jobs:
       run: echo "ENV_CONTAINER_ID=$(docker ps --all --filter status=running --no-trunc --format "{{.ID}}")" >> $GITHUB_ENV
     - name: CreateTargetDB
       run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Verystrongindeed123! -Q "CREATE DATABASE TargetDB"
-    - name: Install from PSGallery
+
+    - name: Install tSQLt with SQL auth
+      uses: lowlydba/tsqlt-installer@v1
+      with:
+        sql-instance: localhost
+        database: TargetDB
+        version: latest
+        user: sa
+        password: Verystrongindeed123!
+    - name: Install SQLCop
       shell: pwsh
       run: |
+          Get-ChildItem SQLCop/Current
           $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost','Master','sa','Verystrongindeed123!'
           $sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
           $sqlConnection.Open()
@@ -48,6 +58,7 @@ jobs:
           #$Command.Connection = $sqlConnection
           #$Command.CommandText = "INSERT INTO FileSizeTable (FileName,FileSize,FileNameLength,Date) VALUES (@name,@size,@length,@dt)";
           #$Command.CommandText = "CREATE DATABASE TARGETDB";
+          #$MyQuery = get-content "e:\SQLQuery1.sql";
           #$Command.Parameters.Add("@name", $i);
           #$Command.Parameters.Add("@size", $items);
           #$Command.Parameters.Add("@length", $temp);
@@ -56,11 +67,3 @@ jobs:
           #$sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
           #$sqlConnection.Open()
           $sqlConnection.Close()
-    - name: Install tSQLt with SQL auth
-      uses: lowlydba/tsqlt-installer@v1
-      with:
-        sql-instance: localhost
-        database: Master
-        version: latest
-        user: sa
-        password: Verystrongindeed123!
