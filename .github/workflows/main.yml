@@ -62,7 +62,7 @@ jobs:
             $_.Name
             $Query = get-content $_ -raw            
             $Command.CommandText = $Query
-            $Command.ExecuteNonQuery();
+            #$Command.ExecuteNonQuery();
           }
           #$MyQuery = get-content "e:\SQLQuery1.sql";
           #$Command.Parameters.Add("@name", $i);
