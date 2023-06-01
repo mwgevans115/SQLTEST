@@ -140,7 +140,7 @@ jobs:
             Username='sa'
             Password='Verystrongindeed123!'
          }
-         $results = Invoke-Sqlcmd -Query "EXEC [tSQLt].[XmlResultFormatter];"  @Params -TrustServerCertificate | Select -expandproperty Column1
+         $results = Invoke-Sqlcmd -Query "EXEC [tSQLt].[XmlResultFormatter];"  @Params -TrustServerCertificate -MaxCharLength 16384 | Select -expandproperty Column1
          $results
          $results | Out-File testresult.xml
     - name: Test Report
