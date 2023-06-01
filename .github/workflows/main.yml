@@ -141,6 +141,7 @@ jobs:
             Password='Verystrongindeed123!'
          }
          $results = Invoke-Sqlcmd -Query "EXEC [tSQLt].[XmlResultFormatter];"  @Params -TrustServerCertificate | Select -expandproperty Column1
+         $results
          $results | Out-File testresult.xml
     - name: Test Report
       uses: dorny/test-reporter@v1
@@ -148,5 +149,5 @@ jobs:
       with:
         name: JEST Tests            # Name of the check run which will be created
         path: testresult.xml    # Path to test results
-        reporter: jest-junit        # Format of test results
+        reporter: java-junit        # Format of test results
         
