@@ -34,7 +34,7 @@ jobs:
     - name: wait for SQL start
       shell: pwsh
       run: |
-          $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost','TargetDB','sa','Verystrongindeed123!'
+          $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost','Master','sa','Verystrongindeed123!'
           $sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
           $retryCount= 5
           while ((-not $SqlConnection.State -eq 1) -and ($retryCount-ge 0)){
