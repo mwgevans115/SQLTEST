@@ -140,5 +140,5 @@ jobs:
             Username='sa'
             Password='Verystrongindeed123!'
          }
-         Invoke-Sqlcmd -Query ":XML ON`n`rEXEC [tSQLt].[XmlResultFormatter];"  @Params -TrustServerCertificate
+         Invoke-Sqlcmd -Query "EXEC [tSQLt].[XmlResultFormatter];"  @Params -TrustServerCertificate
         
