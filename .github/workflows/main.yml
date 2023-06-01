@@ -136,7 +136,7 @@ jobs:
           'Page life expectancy'
           'Service Account'
           )
-         $files = Get-ChildItem SQLCop/Current/*.sql | Where {%_.BaseName -notin $exclude}
+         $files = Get-ChildItem SQLCop/Current/*.sql | Where {$_.BaseName -notin $exclude}
          $files | % {
             $_.Name
             
