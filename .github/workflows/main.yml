@@ -130,6 +130,8 @@ jobs:
          $exclude = @(
           'Agent Service'
           'Database and Log files on the same disk'
+          # File for above test named incorrectly
+          'Database and log on the same disk'
           'Instant File Initialization'
           'Max degree of parallelism'
           'Old Backups'
