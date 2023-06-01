@@ -42,6 +42,8 @@ jobs:
               $sqlConnection.Open()
             } catch {
               $e = $_
+              Write-Output "Something threw an exception or used Write-Error"
+              Write-Output $_
               Write-Host "Next attempt in 5 seconds"
               Start-Sleep -s 5
               $retrycount --
