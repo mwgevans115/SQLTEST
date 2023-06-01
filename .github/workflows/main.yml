@@ -130,3 +130,15 @@ jobs:
             Invoke-Sqlcmd -InputFile $_.FullName @Params -TrustServerCertificate
           }
           Invoke-Sqlcmd -Query "Exec tsqlt.run sqlcop" @Params -TrustServerCertificate
+    - name: Collect Results
+      if: always()
+      shell: pwsh
+      run: |
+         $Params=@{
+            ServerInstance='localhost'
+            Database='TargetDB'
+            Username='sa'
+            Password='Verystrongindeed123!'
+         }
+         Invoke-Sqlcmd -Query ":XML ON`n`rEXEC [tSQLt].[XmlResultFormatter];"  @Params -TrustServerCertificate
+        
