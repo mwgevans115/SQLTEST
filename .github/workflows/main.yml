@@ -127,7 +127,16 @@ jobs:
             Password='Verystrongindeed123!'
          }
          Invoke-Sqlcmd -Query 'CREATE SCHEMA SQLCop'  @Params -TrustServerCertificate
-         $files = Get-ChildItem SQLCop/Current/*.sql
+         $exclude = @(
+          Agent Service
+          Database and Log files on the same disk
+          Instant File Initialization
+          Max degree of parallelism
+          Old Backups
+          Page life expectancy
+          Service Account 
+          )
+         $files = Get-ChildItem SQLCop/Current/*.sql | Where {%_.BaseName -notin $exclude}
          $files | % {
             $_.Name
             
