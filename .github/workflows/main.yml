@@ -14,6 +14,11 @@ jobs:
  sql-auth-tsqlt:
   name: Test installting tSQLt with SQL auth
   runs-on: ubuntu-latest
+  permissions:
+    contents: read
+    issues: read
+    checks: write
+    pull-requests: write
   services:
     sqlserver:
       image: mcr.microsoft.com/mssql/server:2019-latest
