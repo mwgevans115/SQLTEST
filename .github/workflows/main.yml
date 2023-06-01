@@ -31,8 +31,44 @@ jobs:
       with:
         repository: red-gate/SQLCop
         path: SQLCop
-    - name: Sleep for 30 seconds
-      run: sleep 30s
+    - name: wait for SQL start
+      shell: pwsh
+      run: |
+          $connectionString = 'Data Source={0};database={1};User ID={2};Password={3}' -f 'localhost','TargetDB','sa','Verystrongindeed123!'
+          $sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
+          $retryCount= 5
+          while ((-not $SqlConnection.State -eq 1) -and ($retryCount-ge 0)){
+            try{
+              $sqlConnection.Open()
+            } catch {
+              $e = $_
+              Write-Host "Next attempt in 5 seconds"
+              Start-Sleep -s 5
+              $retrycount --
+            }
+          }
+          $SQLConnection.Close()
+          exit
+          $Command = New-Object System.Data.SQLClient.SQLCommand
+          $Command.Connection = $sqlConnection
+          #$Command.CommandText = "INSERT INTO FileSizeTable (FileName,FileSize,FileNameLength,Date) VALUES (@name,@size,@length,@dt)";
+          #$Command.CommandText = "CREATE DATABASE TARGETDB";
+          $files | % {
+            $_.Name
+            $Query = get-content $_ -raw
+            $Query
+            $Command.CommandText = $Query
+            #$Command.ExecuteNonQuery();
+          }
+          #$MyQuery = get-content "e:\SQLQuery1.sql";
+          #$Command.Parameters.Add("@name", $i);
+          #$Command.Parameters.Add("@size", $items);
+          #$Command.Parameters.Add("@length", $temp);
+          #$Command.Parameters.Add("@dt", $currentdate);
+          #$Command.ExecuteNonQuery();
+          #$sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
+          #$sqlConnection.Open()
+          $sqlConnection.Close()
       shell: bash
     - name: Set environment variable ENV_CONTAINER_ID
       run: echo "ENV_CONTAINER_ID=$(docker ps --all --filter status=running --no-trunc --format "{{.ID}}")" >> $GITHUB_ENV
